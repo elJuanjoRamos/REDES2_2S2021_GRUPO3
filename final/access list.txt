@@ -1,0 +1,32 @@
+access list estudiantes
+Router(config)#access-list 1 permit 192.168.1.32 0.0.0.31
+Router(config)#access-list 1 deny any
+asignar a interfaz
+Router(config)#interface gigabitEthernet 0/1
+Router(config-if)#ip access-group 1 out
+
+access list administracion
+Router(config)#access-list 2 permit 192.164.4.32 0.0.0.31
+Router(config)#access-list 2 deny any 
+
+asignarlo a interfaz
+Router(config)#interface gigabitEthernet 0/0
+Router(config-if)#ip access-group 1 out
+
+
+access list auxiliar
+
+Router(config)#access-list 4 permit 192.168.3.32 0.0.0.31
+asignar a puerto
+Router(config)#inter gigabitEthernet 0/1
+Router(config-if)#ip access-group 3 out
+
+
+
+
+access list profesores
+Router(config)#access-list 3 permit 192.168.2.32 0.0.0.31
+Router(config)#access-list 3 deny any 
+asignar puerto
+Router(config)#interface gigabitEthernet 0/0
+Router(config-if)#ip access-group 3 out
