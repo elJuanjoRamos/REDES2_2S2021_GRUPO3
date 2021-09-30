@@ -1,0 +1,18 @@
+table {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 70%;
+  margin-left: 10%;
+}
+
+
+.mat-icon {
+  cursor: pointer;
+}
