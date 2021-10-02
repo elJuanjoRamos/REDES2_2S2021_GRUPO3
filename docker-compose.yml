@@ -1,0 +1,106 @@
+version : "3.7"
+services:  
+    frontend:
+        container_name: frontend
+        restart: always
+        build: ./frontend
+        ports:
+            - "80:80"
+        environment:
+            - NODE_ENV=production
+        depends_on:
+            - middleware
+        networks:
+            - frontend_network
+            
+
+    servicio1:
+        container_name: servicio1
+        restart: always
+        build: ./backend
+        ports:
+            - "4004:4004"
+        environment:
+            - FIRMA=201807266
+        links:
+            - db
+        networks:
+            - service_network
+
+    servicio2:
+        container_name: servicio2
+        restart: always
+        build: ./backend
+        ports:
+            - "4004:4004"
+        environment:
+            - FIRMA=201801262
+        links:
+            - db
+        networks:
+            - service_network
+
+    servicio3:
+        container_name: servicio3
+        restart: always
+        build: ./backend
+        ports:
+            - "4004:4004"
+        environment:
+            - FIRMA=201800535
+        links:
+            - db
+        networks:
+            - service_network
+
+    servicio4:
+        container_name: servicio4
+        restart: always
+        build: ./backend
+        ports:
+            - "4004:4004"
+        environment:
+            - FIRMA=201801182
+        links:
+            - db
+        networks:
+            - service_network
+
+    load_balancer:
+        build: ./nginx
+        ports:
+          - "8080:80"
+        depends_on:
+          - servicio1
+        networks:
+            - service_network
+            - frontend_network
+
+    db:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - /home/db/database:var/lib/mysql
+        networks:
+            - db_network
+            - service_network
+
+networks:
+  db_network:
+    driver: "bridge"
+    ipam:
+        config:
+            - subnet: 10.10.13.0/24
+  service_network:
+    driver: "bridge"
+    ipam:
+        config:
+            - subnet: 172.35.73.0/24
+  frontend_network:
+    driver: "bridge"
+    ipam:
+        config:
+            - subnet: 192.168.53.0/24
