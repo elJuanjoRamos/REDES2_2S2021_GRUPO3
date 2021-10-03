@@ -13,13 +13,19 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import {FormsModule} from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { HttpClientModule } from '@angular/common/http';
+import { ReportFormComponent } from './components/report-form/report-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ReportListComponent
+    ReportListComponent,
+    ReportFormComponent
   ],
   imports: [
     BrowserModule,
@@ -32,8 +38,12 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
+    FormsModule,
+    MatButtonModule,
     MatIconModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSnackBarModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
