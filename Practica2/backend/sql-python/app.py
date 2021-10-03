@@ -28,7 +28,6 @@ def parse_date(date):
     # YY -- MM -- DD
     return current[2] + '/' + current[1] + '/' + current[0]
 
-
 @app.route('/')
 def home():
     return jsonify({"message": "api montada correctamente"})
@@ -67,7 +66,6 @@ def getById(carnet):
         print(e)
         return jsonify({"message": "error al obtener la data"}), 400
 
-
 @app.route('/repo/<repo>', methods=['GET'])
 def getRepo(repo):
     try:
@@ -83,7 +81,6 @@ def getRepo(repo):
     except Exception as e:
         print(e)
         return jsonify({"message": "error al obtener la data"}), 400
-
 
 
 @app.route('/publicar', methods=['POST'])
