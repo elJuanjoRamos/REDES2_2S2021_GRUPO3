@@ -1,6 +1,18 @@
 version : "3.7"
 services:  
-    
+    frontend:
+        container_name: frontend
+        restart: always
+        build: ./frontend
+        ports:
+            - "4200:80"
+        environment:
+            - NODE_ENV=production
+        depends_on:
+            - load_balancer
+        networks:
+            - frontend_network
+
     servicio1:
         container_name: servicio1
         restart: always
@@ -64,7 +76,7 @@ services:
     load_balancer:
         build: ./backend/loadbalancer
         ports:
-          - "6000:80"        
+          - "8080:80"        
         depends_on:
           - servicio1
           - servicio2

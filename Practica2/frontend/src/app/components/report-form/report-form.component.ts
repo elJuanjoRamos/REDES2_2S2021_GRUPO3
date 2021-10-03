@@ -30,7 +30,7 @@ export class ReportFormComponent implements OnInit {
     }else{
       try {
         const data = await this._reportService.publish(this.report);
-
+        console.log(data)
         if (data[1] === '200') {
           this._snackBar.open('Atención. Debe llenar ambos campos.', 'Ok', { duration: 2000, panelClass: ['mat-toolbar', 'mat-warn']});
         }
