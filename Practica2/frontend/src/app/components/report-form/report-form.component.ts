@@ -14,22 +14,22 @@ export class ReportFormComponent implements OnInit {
   public report: ReportModel = {
     idReport: 0,
     carnet: 0,
-    name: '',
+    nombre: '',
     curso: '',
-    message: ''
+    mensaje: ''
   }
 
-  constructor(private reportService: ReportService, private _snackBar: MatSnackBar) { }
+  constructor(private _reportService: ReportService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
 
-  public async send() {
-    if(this.report.carnet == 0 || this.report.name == '' || this.report.curso == '' || this.report.message == ''){
+  public async send(): Promise<void> {
+    if(this.report.carnet == 0 || this.report.nombre == '' || this.report.curso == '' || this.report.mensaje == ''){
       this._snackBar.open('Atención. Debe llenar todos los campos.', 'Ok', { duration: 2000, panelClass: ['mat-toolbar', 'mat-warn']});
     }else{
       try {
-        const data = await this.reportService.publish(this.report);
+        const data = await this._reportService.publish(this.report);
 
         if (data[1] === '200') {
           this._snackBar.open('Atención. Debe llenar ambos campos.', 'Ok', { duration: 2000, panelClass: ['mat-toolbar', 'mat-warn']});
@@ -40,9 +40,9 @@ export class ReportFormComponent implements OnInit {
       }
     }
     this.report.carnet = 0;
-    this.report.name = '';
+    this.report.nombre = '';
     this.report.curso = '';
-    this.report.message = '';
+    this.report.mensaje = '';
   }
 
 }

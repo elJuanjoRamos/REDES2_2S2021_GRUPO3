@@ -3,6 +3,7 @@ import os
 from operator import itemgetter
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv, find_dotenv
+from flask_cors import CORS
 
 load_dotenv(find_dotenv())
 
@@ -16,6 +17,7 @@ FIRMA = os.environ.get('FIRMA')
 # FLASK CONFIG
 app = Flask(__name__)
 app.debug = True
+CORS(app)
 
 # GLOBAL VARIABLES
 
@@ -32,6 +34,7 @@ def parse_date(date):
 def home():
     return jsonify({"message": "api montada correctamente"})
 
+# trae todos los reportes
 
 @app.route('/all', methods=['GET'])
 def getAll():
@@ -50,6 +53,7 @@ def getAll():
         return jsonify({"message": "error al obtener la data"}), 400
 
 
+# todos los reportes de un carnet
 @app.route('/all/<carnet>', methods=['GET'])
 def getById(carnet):
     try:
@@ -66,6 +70,7 @@ def getById(carnet):
         print(e)
         return jsonify({"message": "error al obtener la data"}), 400
 
+# trae un reporte por su id
 @app.route('/repo/<repo>', methods=['GET'])
 def getRepo(repo):
     try:
@@ -83,17 +88,24 @@ def getRepo(repo):
         return jsonify({"message": "error al obtener la data"}), 400
 
 
+# publica un reporte
 @app.route('/publicar', methods=['POST'])
 def send():
+    print(request)
     report = request.get_json()
+    print(report)
     carnet, nombre, mensaje, curso = itemgetter('carnet', 'nombre', 'mensaje', 'curso')(report)
     try:
         query = 'INSERT INTO Reporte(carnet, nombre, curso, mensaje, procesado, fecha) VALUES(%s,%s,%s,%s,%s,NOW())'
         cursor.execute(query, (carnet, nombre, curso, mensaje, FIRMA))
         db.commit()
+        # response = jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}'}), 200
+        # return response.headers.add("Access-Control-Allow-Origin", "*")
         return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}'}), 200
     except Exception as e:
         print(e)
+        # response = jsonify({"message": "error to insert data"}), 400
+        # return response.headers.add("Access-Control-Allow-Origin", "*")
         return jsonify({"message": "error to insert data"}), 400
 
 

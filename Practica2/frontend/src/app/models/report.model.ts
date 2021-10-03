@@ -2,9 +2,9 @@ export class ReportModel {
   constructor(
     public idReport?:number,
     public carnet?: number,
-    public name?:string,
+    public nombre?:string,
     public curso?: string,
-    public message?: string
+    public mensaje?: string
   ){
 
   }
