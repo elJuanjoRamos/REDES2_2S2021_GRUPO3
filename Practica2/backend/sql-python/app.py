@@ -47,10 +47,10 @@ def getAll():
         for result in data:
             json_data.append(dict(zip(row_headers, result)))
 
-        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data}), 200
+        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data, "code": '200'}), 200
     except Exception as e:
         print(e)
-        return jsonify({"message": "error al obtener la data"}), 400
+        return jsonify({"message": "error al obtener la data", "code": '400'}), 400
 
 
 # todos los reportes de un carnet
@@ -65,10 +65,10 @@ def getById(carnet):
         for result in data:
             json_data.append(dict(zip(row_headers, result)))
 
-        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data}), 200
+        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data, "code": '200'}), 200
     except Exception as e:
         print(e)
-        return jsonify({"message": "error al obtener la data"}), 400
+        return jsonify({"message": "error al obtener la data", "code": '200', "code": '400'}), 400
 
 # trae un reporte por su id
 @app.route('/repo/<repo>', methods=['GET'])
@@ -82,10 +82,10 @@ def getRepo(repo):
         for result in data:
             json_data.append(dict(zip(row_headers, result)))
 
-        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data}), 200
+        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data, "code": '200'}), 200
     except Exception as e:
         print(e)
-        return jsonify({"message": "error al obtener la data"}), 400
+        return jsonify({"message": "error al obtener la data", "code": '400'}), 400
 
 
 # publica un reporte
@@ -99,14 +99,10 @@ def send():
         query = 'INSERT INTO Reporte(carnet, nombre, curso, mensaje, procesado, fecha) VALUES(%s,%s,%s,%s,%s,NOW())'
         cursor.execute(query, (carnet, nombre, curso, mensaje, FIRMA))
         db.commit()
-        # response = jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}'}), 200
-        # return response.headers.add("Access-Control-Allow-Origin", "*")
-        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}'}), 200
+        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "code": '200'}), 200
     except Exception as e:
         print(e)
-        # response = jsonify({"message": "error to insert data"}), 400
-        # return response.headers.add("Access-Control-Allow-Origin", "*")
-        return jsonify({"message": "error to insert data"}), 400
+        return jsonify({"message": "error to insert data", "code": '200'}), 400
 
 
 @app.route('/finalizarCarga', methods=['GET'])

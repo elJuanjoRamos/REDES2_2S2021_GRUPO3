@@ -18,14 +18,17 @@ import {FormsModule} from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDialogModule} from "@angular/material/dialog";
 import { HttpClientModule } from '@angular/common/http';
 import { ReportFormComponent } from './components/report-form/report-form.component';
+import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ReportListComponent,
-    ReportFormComponent
+    ReportFormComponent,
+    ReportDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -43,9 +46,11 @@ import { ReportFormComponent } from './components/report-form/report-form.compon
     MatIconModule,
     MatExpansionModule,
     MatSnackBarModule,
+    MatDialogModule,
     HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ReportDialogComponent]
 })
 export class AppModule { }

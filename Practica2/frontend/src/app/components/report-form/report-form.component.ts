@@ -12,7 +12,7 @@ import { ReportService } from 'src/app/services/report.service';
 export class ReportFormComponent implements OnInit {
 
   public report: ReportModel = {
-    idReport: 0,
+    id: '',
     carnet: 0,
     nombre: '',
     curso: '',
@@ -30,9 +30,9 @@ export class ReportFormComponent implements OnInit {
     }else{
       try {
         const data = await this._reportService.publish(this.report);
-        console.log(data)
-        if (data[1] === '200') {
-          this._snackBar.open('Atención. Debe llenar ambos campos.', 'Ok', { duration: 2000, panelClass: ['mat-toolbar', 'mat-warn']});
+
+        if (data['code'] === '200') {
+          this._snackBar.open(`Listo! ${data['message']}`, 'Ok', { duration: 2000, panelClass: ['mat-toolbar', 'mat-accent']});
         }
       } catch (err) {
         this._snackBar.open('Error. Intenta nuevamente.', 'Ok', { duration: 2000, panelClass: ['mat-toolbar','mat-warn']});
