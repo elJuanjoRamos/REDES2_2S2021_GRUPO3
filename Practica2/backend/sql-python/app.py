@@ -17,7 +17,7 @@ FIRMA = os.environ.get('FIRMA')
 # FLASK CONFIG
 app = Flask(__name__)
 app.debug = True
-CORS(app)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # GLOBAL VARIABLES
 
