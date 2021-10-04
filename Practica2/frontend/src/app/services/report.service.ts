@@ -14,7 +14,7 @@ export class ReportService {
   }
 
   public async getAll(): Promise<any> {
-    return await this._httpClient.get(`${this.url}/getAll`).toPromise()
+    return await this._httpClient.get(`${this.url}/all`).toPromise()
   }
 
   public async getAllCarnet(carnet: string): Promise<any> {

@@ -1,0 +1,26 @@
+
+<mat-form-field appearance="fill">
+    <mat-label>ID</mat-label>
+    <input matInput [(ngModel)]="report.id" type="number">
+  </mat-form-field>
+<mat-form-field appearance="fill">
+    <mat-label>Carnet</mat-label>
+    <input matInput [(ngModel)]="report.carnet" type="number">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Nombre</mat-label>
+    <input matInput [(ngModel)]="report.nombre" type="text">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Curso/Proyecto</mat-label>
+    <input matInput [(ngModel)]="report.curso" type="text">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Cuerpo del reporte</mat-label>
+    <textarea matInput [(ngModel)]="report.mensaje" type="text"></textarea>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Procesado</mat-label>
+    <textarea matInput [(ngModel)]="report.procesado" type="text"></textarea>
+  </mat-form-field>
+  

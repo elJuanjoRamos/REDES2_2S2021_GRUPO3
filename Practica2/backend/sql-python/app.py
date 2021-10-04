@@ -3,6 +3,7 @@ import os
 from operator import itemgetter
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv, find_dotenv
+from flask_cors import CORS
 
 load_dotenv(find_dotenv())
 
@@ -16,6 +17,7 @@ FIRMA = os.environ.get('FIRMA')
 # FLASK CONFIG
 app = Flask(__name__)
 app.debug = True
+CORS(app)
 
 # GLOBAL VARIABLES
 
@@ -28,11 +30,11 @@ def parse_date(date):
     # YY -- MM -- DD
     return current[2] + '/' + current[1] + '/' + current[0]
 
-
 @app.route('/')
 def home():
     return jsonify({"message": "api montada correctamente"})
 
+# trae todos los reportes
 
 @app.route('/all', methods=['GET'])
 def getAll():
@@ -45,12 +47,13 @@ def getAll():
         for result in data:
             json_data.append(dict(zip(row_headers, result)))
 
-        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data}), 200
+        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data, "code": '200'}), 200
     except Exception as e:
         print(e)
-        return jsonify({"message": "error al obtener la data"}), 400
+        return jsonify({"message": "error al obtener la data", "code": '400'}), 400
 
 
+# todos los reportes de un carnet
 @app.route('/all/<carnet>', methods=['GET'])
 def getById(carnet):
     try:
@@ -62,12 +65,12 @@ def getById(carnet):
         for result in data:
             json_data.append(dict(zip(row_headers, result)))
 
-        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data}), 200
+        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data, "code": '200'}), 200
     except Exception as e:
         print(e)
-        return jsonify({"message": "error al obtener la data"}), 400
+        return jsonify({"message": "error al obtener la data", "code": '200', "code": '400'}), 400
 
-
+# trae un reporte por su id
 @app.route('/repo/<repo>', methods=['GET'])
 def getRepo(repo):
     try:
@@ -79,25 +82,27 @@ def getRepo(repo):
         for result in data:
             json_data.append(dict(zip(row_headers, result)))
 
-        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data}), 200
+        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data, "code": '200'}), 200
     except Exception as e:
         print(e)
-        return jsonify({"message": "error al obtener la data"}), 400
+        return jsonify({"message": "error al obtener la data", "code": '400'}), 400
 
 
-
+# publica un reporte
 @app.route('/publicar', methods=['POST'])
 def send():
+    print(request)
     report = request.get_json()
+    print(report)
     carnet, nombre, mensaje, curso = itemgetter('carnet', 'nombre', 'mensaje', 'curso')(report)
     try:
         query = 'INSERT INTO Reporte(carnet, nombre, curso, mensaje, procesado, fecha) VALUES(%s,%s,%s,%s,%s,NOW())'
         cursor.execute(query, (carnet, nombre, curso, mensaje, FIRMA))
         db.commit()
-        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}'}), 200
+        return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "code": '200'}), 200
     except Exception as e:
         print(e)
-        return jsonify({"message": "error to insert data"}), 400
+        return jsonify({"message": "error to insert data", "code": '200'}), 400
 
 
 @app.route('/finalizarCarga', methods=['GET'])
