@@ -1,0 +1,26 @@
+<!-- <mat-form-field>
+    <mat-label> Ingreso de reportes de practicantes </mat-label>
+</mat-form-field> -->
+<div class="container">
+
+    <mat-form-field appearance="fill">
+        <mat-label>Carnet</mat-label>
+        <input matInput [(ngModel)]="report.carnet" type="number">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="report.nombre" type="text">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Curso/Proyecto</mat-label>
+        <input matInput [(ngModel)]="report.curso" type="text">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Cuerpo del reporte</mat-label>
+        <textarea matInput [(ngModel)]="report.mensaje" type="text"></textarea>
+      </mat-form-field>
+      <br>
+      <button mat-raised-button color="primary" (click)="send()">Enviar</button>
+
+</div>
+

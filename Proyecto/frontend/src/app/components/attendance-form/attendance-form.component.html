@@ -1,0 +1,26 @@
+<div class="container">
+  <form autocomplete="off" #formAttendance="ngForm" (ngSubmit)="register(formAttendance)">
+      <h1></h1>
+      <h1> Registro de Asistencia </h1>
+      <mat-form-field appearance="outline">
+          <mat-label>Carnet</mat-label>
+          <input matInput [(ngModel)]="attendance.carnet" name="carnetField" #carnetField="ngModel"  type="number" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput [(ngModel)]="attendance.nombre" name="nameField" #nameField="ngModel" type="text" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" >
+          <mat-label>Evento</mat-label>
+          <input matInput [(ngModel)]="attendance.evento" name="eventField" #eventField="ngModel" type="text" required>
+        </mat-form-field>
+        <div>
+          <input (change)="uploadImage($event)" accept="image/*" type="file" class="file-input" #fileUpload />
+          <button mat-button class="upload-image" color="accent" (click)="fileUpload.click()"> <mat-icon>file_upload</mat-icon> Sube una foto </button>
+          <img mat-card-image class="screen-image" [src]="uploadedImage || 'https://www.giulianisgrupo.com/wp-content/uploads/2018/05/nodisponible.png'"  />
+        </div>
+        <br>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formAttendance.form.valid"> Registrar Asistencia </button>
+    </form>
+</div>
+
