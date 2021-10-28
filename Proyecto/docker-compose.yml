@@ -1,0 +1,117 @@
+version : "3.7"
+services:  
+    frontend:
+        container_name: frontend
+        restart: always
+        build: ./frontend
+        ports:
+            - "4200:80"
+        environment:
+            - NODE_ENV=production
+        depends_on:
+            - load_balancer
+        networks:
+            - frontend_network
+
+    servicio1:
+        container_name: servicio1
+        restart: always
+        image: backend-redes
+        ports:
+            - "2000:5000"
+        environment:
+            - FIRMA=201807266
+        links:
+            - db
+        networks:
+            - service_network
+        depends_on:
+          - db
+
+    servicio2:
+        container_name: servicio2
+        restart: always
+        image: backend-redes
+        ports:
+            - "3000:5000"
+        environment:
+            - FIRMA=201801262
+        links:
+            - db
+        networks:
+            - service_network
+        depends_on:
+          - db
+
+    servicio3:
+        container_name: servicio3
+        restart: always
+        image: backend-redes
+        ports:
+            - "4000:5000"
+        environment:
+            - FIRMA=201800535
+        links:
+            - db
+        networks:
+            - service_network
+        depends_on:
+          - db
+
+    servicio4:
+        container_name: servicio4
+        restart: always
+        image: backend-redes
+        ports:
+            - "5000:5000"
+        environment:
+            - FIRMA=201801182
+        links:
+            - db
+        networks:
+            - service_network
+        depends_on:
+          - db
+
+    load_balancer:
+        build: ./backend/loadbalancer
+        ports:
+          - "8080:80"        
+        depends_on:
+          - servicio1
+          - servicio2
+          - servicio3
+          - servicio4
+        networks:
+            - service_network
+            - frontend_network
+    db:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports: 
+            - "3306:3306"
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - /my/own/datadir:/var/lib/mysql
+        networks:
+            - db_network
+            - service_network
+
+networks:
+  db_network:
+    driver: "bridge"
+    ipam:
+        config:
+            - subnet: 10.10.13.0/24
+  service_network:
+    driver: "bridge"
+    ipam:
+        config:
+            - subnet: 172.35.73.0/24
+  frontend_network:
+    driver: "bridge"
+    ipam:
+        config:
+            - subnet: 192.168.53.0/24
