@@ -2,8 +2,14 @@
 
 h1 {
   font-family: 'Changa', sans-serif;
+  width: 100%;
   text-align: center;
   font-size: 42px;
+  margin-top: 10%;
+}
+
+:host {
+  align-self: start;
 }
 
 .mat-form-field {

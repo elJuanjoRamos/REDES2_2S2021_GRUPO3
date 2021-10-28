@@ -4,6 +4,7 @@ export class AttendanceModel {
     public carnet?: number,
     public nombre?:string,
     public evento?: string,
+    public idEvento?: number,
     public imgbase64?: string,
     public procesado?: string,
     public fecha?: string

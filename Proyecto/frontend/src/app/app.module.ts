@@ -28,6 +28,7 @@ import { AttendanceFormComponent } from './components/attendance-form/attendance
 import { AttendanceListEventComponent } from './components/attendance-list-event/attendance-list-event.component';
 import { AttendanceListStudentComponent } from './components/attendance-list-student/attendance-list-student.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +58,8 @@ import { AttendanceListStudentComponent } from './components/attendance-list-stu
     MatSnackBarModule,
     MatDialogModule,
     HttpClientModule,
-    MatGridListModule
+    MatGridListModule,
+    MatPaginatorModule
   ],
   providers: [
     FormsModule,

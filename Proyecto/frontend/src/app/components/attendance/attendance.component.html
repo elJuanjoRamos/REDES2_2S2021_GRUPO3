@@ -1,6 +1,11 @@
-<mat-grid-list cols="4" rowHeight="800px">
-  <mat-grid-tile colspan="2" rows.span="4" >
+<mat-grid-list cols="4" rowHeight="275px">
+  <mat-grid-tile colspan="2" rowspan="4" >
       <app-attendance-form></app-attendance-form>
   </mat-grid-tile>
-  <mat-grid-tile colspan="2" rows.span="4" > Asistencia por Evento </mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="2"  >
+    <app-attendance-list-event></app-attendance-list-event>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="2"  >
+    <app-attendance-list-student></app-attendance-list-student>
+  </mat-grid-tile>
 </mat-grid-list>

@@ -1,5 +1,4 @@
-<div class="container">
-  <form autocomplete="off" #formAttendance="ngForm" (ngSubmit)="register(formAttendance)">
+<form autocomplete="off" #formAttendance="ngForm" (ngSubmit)="register(formAttendance)">
       <h1></h1>
       <h1> Registro de Asistencia </h1>
       <mat-form-field appearance="outline">
@@ -14,6 +13,10 @@
           <mat-label>Evento</mat-label>
           <input matInput [(ngModel)]="attendance.evento" name="eventField" #eventField="ngModel" type="text" required>
         </mat-form-field>
+        <mat-form-field appearance="outline" >
+          <mat-label>ID Evento </mat-label>
+          <input matInput [(ngModel)]="attendance.idEvento" name="eventIdField" #eventIdField="ngModel" type="number" required>
+        </mat-form-field>
         <div>
           <input (change)="uploadImage($event)" accept="image/*" type="file" class="file-input" #fileUpload />
           <button mat-button class="upload-image" color="accent" (click)="fileUpload.click()"> <mat-icon>file_upload</mat-icon> Sube una foto </button>
@@ -21,6 +24,6 @@
         </div>
         <br>
         <button mat-raised-button color="primary" type="submit" [disabled]="!formAttendance.form.valid"> Registrar Asistencia </button>
-    </form>
-</div>
+</form>
+
 

@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Changa:wght@300;500&display=swap');
+
+h1 {
+  font-family: 'Changa', sans-serif;
+  text-align: center;
+  font-size: 22px;
+  margin-top: 5%;
+}
+
+
+.mat-paginator {
+  background: #e1f5fe;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-icon{
+  cursor: pointer;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 70%;
+  margin-left: 10%;
+}
+
