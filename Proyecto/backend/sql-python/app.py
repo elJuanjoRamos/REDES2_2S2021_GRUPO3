@@ -4,17 +4,23 @@ from operator import itemgetter
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv, find_dotenv
 from flask_cors import CORS
-from s3 import upload_file_to_s3, allowed_file
+from s3 import upload_file_to_s3
+import pymysql
 
 load_dotenv(find_dotenv())
 
 
 # ENV VARIABLES SQL
 CLOUD_SQL_HOST = os.environ.get("CLOUD_SQL_HOST")
-CLOUD_SQL_DATA = os.environ.get('CLOUD_SQL_DATABASE_NAME')
-CLOUD_SQL_PASS = os.environ.get('CLOUD_SQL_PASSWORD')
-CLOUD_SQL_USER = os.environ.get('CLOUD_SQL_USERNAME')
+CLOUD_SQL_DATA = os.environ.get('CLOUD_SQL_DATA')
+CLOUD_SQL_PASS = os.environ.get('CLOUD_SQL_PASS')
+CLOUD_SQL_USER = os.environ.get('CLOUD_SQL_USER')
 FIRMA = os.environ.get('FIRMA')
+
+print(CLOUD_SQL_DATA)
+print(CLOUD_SQL_USER)
+print(CLOUD_SQL_PASS)
+print(CLOUD_SQL_HOST)
 
 # FLASK CONFIG
 app = Flask(__name__)
@@ -22,7 +28,19 @@ app.debug = True
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # DB MYSQL
-db = mysql.connect(host=CLOUD_SQL_HOST, user=CLOUD_SQL_USER, password=CLOUD_SQL_PASS, database=CLOUD_SQL_DATA)
+# db = mysql.connect(host=CLOUD_SQL_HOST, user=CLOUD_SQL_USER, password=CLOUD_SQL_PASS, database=CLOUD_SQL_DATA)
+
+db = pymysql.connect(
+    host=CLOUD_SQL_HOST,
+    port=3306,
+    user=CLOUD_SQL_USER,
+    password=CLOUD_SQL_PASS,
+    db=CLOUD_SQL_DATA
+)
+
+if(db):
+    print("conexion creda con exito")
+
 cursor = db.cursor()
 
 
@@ -35,6 +53,7 @@ def parse_date(date):
 @app.route('/')
 def home():
     return jsonify({"message": "api montada correctamente"})
+
 
 # trae todos los reportes
 
@@ -70,7 +89,7 @@ def getById(carnet):
         return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "data": json_data, "code": '200'}), 200
     except Exception as e:
         print(e)
-        return jsonify({"message": "error al obtener la data", "code": '200', "code": '400'}), 400
+        return jsonify({"message": "error al obtener la data", "code": '400'}), 400
 
 # trae un reporte por su id
 @app.route('/repo/<repo>', methods=['GET'])
@@ -110,7 +129,7 @@ def send():
 @app.route('/asistencia', methods=['POST'])
 def asistencia():
     if 'file' not in request.files:
-        return jsonify({ 'message': 'la imagen es requerida'})
+        return jsonify({'message': 'la imagen es requerida'})
 
     asistencia = request.form
     carnet, nombre, evento, idEvento = itemgetter('carnet', 'nombre', 'evento', 'idEvento')(asistencia)
@@ -120,35 +139,18 @@ def asistencia():
     if file.filename == '':
         return jsonify({ 'message': 'NO selected files'})
 
-    if file and allowed_file(file.filename):
-        output = upload_file_to_s3(file)
+    output = upload_file_to_s3(file)
+    # if upload success,will return file name of uploaded file
+    if output:
 
-        # if upload success,will return file name of uploaded file
-        if output:
-
-            query = 'INSERT INTO Asistencia(nombre, evento, carnet, idEvento, foto, procesado, fecha) VALUES(%s,%s,%s,%s,%s,%s,NOW())'
-            cursor.execute(query, (nombre, evento, carnet, idEvento, output, FIRMA))
-            db.commit()
-            return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "code": '200'}), 200
-
-        # upload failed, redirect to upload page
-        else:
-            return jsonify({ 'message': 'NO selected files'})
-
-
-
-
-    """
-
-    try:
-        query = 'INSERT INTO Reporte(carnet, nombre, curso, mensaje, procesado, fecha) VALUES(%s,%s,%s,%s,%s,NOW())'
-        cursor.execute(query, (carnet, nombre, curso, mensaje, FIRMA))
+        query = 'INSERT INTO Asistencia(nombre, evento, carnet, idEvento, foto, procesado, fecha) VALUES(%s,%s,%s,%s,%s,%s,NOW())'
+        cursor.execute(query, (nombre, evento, carnet, idEvento, output, FIRMA))
         db.commit()
         return jsonify({"message": f'Solicitud atendida por el servidor {FIRMA}', "code": '200'}), 200
-    except Exception as e:
-        print(e)
-        return jsonify({"message": "error to insert data", "code": '200'}), 400
-    """
+
+    # upload failed, redirect to upload page
+    else:
+        return jsonify({ 'message': 'NO selected files'})
 
 
 @app.route('/asistencia/evento/<event>', methods=['GET'])
@@ -187,8 +189,8 @@ def getAsistenciaByCarnet(carnet):
 
 @app.route('/finalizarCarga', methods=['GET'])
 def close():
-    global db
-    db.disconnect()
+    #global db
+    #db.disconnect()
     return jsonify({"message": "connection closed"})
 
 

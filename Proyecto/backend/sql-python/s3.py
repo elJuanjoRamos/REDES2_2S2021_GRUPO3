@@ -16,12 +16,6 @@ AWS_QUERYSTRING_AUTH = False
 s3 = boto3.client("s3", aws_access_key_id=AWS_S3_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 
 
-# function to check file extension
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
 def upload_file_to_s3(file, acl="public-read"):
     try:
         s3.upload_fileobj(
