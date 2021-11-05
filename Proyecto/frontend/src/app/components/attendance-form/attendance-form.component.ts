@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Form, FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AttendanceModel } from 'src/app/models/attendance.model';
+import { AttendanceService } from 'src/app/services/attendance.service';
 
 @Component({
   selector: 'app-attendance-form',
@@ -15,7 +16,8 @@ export class AttendanceFormComponent implements OnInit {
   public screenImage: boolean;
 
   constructor(
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _service: AttendanceService
   ) {
     this.uploadedImage = "";
     this.attendance = new AttendanceModel();
@@ -31,7 +33,13 @@ export class AttendanceFormComponent implements OnInit {
         this.showSnackbar("Falta la captura de tu asistencia")
         return
       }
-      // TODO: Registrar Asistencia
+      const data = await this._service.publish(this.attendance);
+      console.log(data)
+      if (data['code'] === '200') {
+        this.showSnackbar(data['message'])
+      } else {
+        console.log(data)
+      }
 
     } catch (error) {
       Form.resetForm()
@@ -63,7 +71,7 @@ export class AttendanceFormComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = (e: any) => {
       const base64 = e.target.result;
-      this.attendance.imgbase64 = base64.split(',')[1];
+      this.attendance.file = img;
     };
     reader.readAsDataURL(img);
   }

@@ -2,7 +2,9 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {MatTableDataSource} from '@angular/material/table';
+import { AttendanceReportModel } from 'src/app/models/report_attendance.model';
 import { StudentModel } from 'src/app/models/student.model';
+import { AttendanceService } from 'src/app/services/attendance.service';
 
 @Component({
   selector: 'app-attendance-list-event',
@@ -12,15 +14,16 @@ import { StudentModel } from 'src/app/models/student.model';
 export class AttendanceListEventComponent implements OnInit, AfterViewInit {
   public displayedColumns: string[];
   public dataSource: any;
-  public students: StudentModel[]
+  public students: AttendanceReportModel[]
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
   constructor(
-    public _snackBar: MatSnackBar
+    public _snackBar: MatSnackBar,
+    private _service: AttendanceService
   ) {
-    this.displayedColumns = ['id', 'name', 'date'];
-    this.dataSource = new MatTableDataSource<StudentModel>();
+    this.displayedColumns = ['name', 'carnet', 'evento', 'foto', 'fecha'];
+    this.dataSource = new MatTableDataSource<AttendanceReportModel>();
     this.students = [];
   }
 
@@ -31,8 +34,12 @@ export class AttendanceListEventComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator!
   }
 
-  async getData(): Promise <void> {
-    //TODO: Traer estudiantes por evento
+  async getData(value: any): Promise <void> {
+    const data = await this._service.getAttendantByEvent(value)
+    this.dataSource = new MatTableDataSource(data['data']);
+      if (data['code'] === '200') {
+        this._snackBar.open(`Listo! ${data['message']}`, 'Ok', { duration: 2000, panelClass: ['mat-toolbar', 'mat-accent']});
+      }
   }
 
   showSnackbar(message: string = 'Ha ocurrido un error') {

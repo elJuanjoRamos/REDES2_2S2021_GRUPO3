@@ -4,30 +4,39 @@
     <mat-label> Buscar Evento </mat-label>
     <input  matInput autocomplete="off" placeholder="Nombre del Evento" #input>
 </mat-form-field>
-<button mat-icon-button color="accent" aria-hidden="search" (click)="getData()"><mat-icon>search</mat-icon></button>
+<button mat-icon-button color="accent" aria-hidden="search" (click)="getData(input.value)"><mat-icon>search</mat-icon></button>
 
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
 
-      <!-- Carnet Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> Carnet </th>
-        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-      </ng-container>
 
       <!-- Student Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Nombre Estudiante </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
       </ng-container>
 
-      <!-- Date Column -->
-      <ng-container matColumnDef="date">
+      <ng-container matColumnDef="carnet">
+        <th mat-header-cell *matHeaderCellDef> Carnet Estudiante </th>
+        <td mat-cell *matCellDef="let element"> {{element.carnet}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="evento">
+        <th mat-header-cell *matHeaderCellDef> Evento </th>
+        <td mat-cell *matCellDef="let element"> {{element.evento}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="foto">
+        <th mat-header-cell *matHeaderCellDef> Foto </th>
+        <td mat-cell *matCellDef="let element"> {{element.foto}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha">
         <th mat-header-cell *matHeaderCellDef> Fecha </th>
-        <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.fecha}} </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
